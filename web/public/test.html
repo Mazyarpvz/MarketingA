@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Dashboard</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>🚀 Test Page Working!</h1>
+    <div id="kpi-test"></div>
+    <script>
+        // Test API call
+        fetch('/api/kpi')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('kpi-test').innerHTML = 
+                    '<h2>API Test Result:</h2><pre>' + JSON.stringify(data, null, 2) + '</pre>';
+            })
+            .catch(error => {
+                document.getElementById('kpi-test').innerHTML = 
+                    '<h2>API Error:</h2><pre>' + error.message + '</pre>';
+            });
+    </script>
+</body>
+</html>
