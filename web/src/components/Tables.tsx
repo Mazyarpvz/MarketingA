@@ -10,24 +10,24 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
   const getStatusClass = (status: string) => {
     switch (status.toLowerCase()) {
       case 'open':
-        return 'status-badge status-open';
+        return 'status-badge status-open hover:shadow-md hover:scale-105';
       case 'in progress':
-        return 'status-badge status-in-progress';
+        return 'status-badge status-in-progress hover:shadow-md hover:scale-105';
       case 'review':
-        return 'status-badge status-review';
+        return 'status-badge status-review hover:shadow-md hover:scale-105';
       case 'on hold':
-        return 'status-badge status-on-hold';
+        return 'status-badge status-on-hold hover:shadow-md hover:scale-105';
       case 'blocked':
-        return 'status-badge status-blocked';
+        return 'status-badge status-blocked hover:shadow-md hover:scale-105';
       case 'done':
-        return 'status-badge status-done';
+        return 'status-badge status-done hover:shadow-md hover:scale-105';
       default:
-        return 'status-badge status-open';
+        return 'status-badge status-open hover:shadow-md hover:scale-105';
     }
   };
 
   return (
-    <span className={getStatusClass(status)}>
+    <span className={`${getStatusClass(status)} transition-all duration-200 cursor-default inline-block`}>
       {status}
     </span>
   );
@@ -78,12 +78,20 @@ export const OverdueTable: React.FC<OverdueTableProps> = ({ data }) => {
           </thead>
           <tbody>
             {data.map((task) => (
-              <tr key={task.task_id}>
+              <tr 
+                key={task.task_id}
+                className="hover:bg-gray-800/30 transition-colors duration-200 cursor-pointer"
+              >
                 <td className="font-medium">{task.title}</td>
                 <td>{task.owner}</td>
                 <td>{formatJalaliDate(task.due_at)}</td>
                 <td><StatusBadge status={task.status} /></td>
                 <td className="text-red-600 font-medium">{task.days_overdue} روز</td>
+                <td>
+                  <button className="btn-xs btn-primary mr-1" onClick={() => import('react-hot-toast').then(({ default: toast }) => toast('جزئیات تسک: ' + task.title, { icon: '🔎', duration: 2000 }))}>جزئیات</button>
+                  <button className="btn-xs btn-warning mr-1" onClick={() => import('react-hot-toast').then(({ default: toast }) => toast('ویرایش تسک: ' + task.title, { icon: '✏️', duration: 2000 }))}>ویرایش</button>
+                  <button className="btn-xs btn-danger" onClick={() => import('react-hot-toast').then(({ default: toast }) => toast('تسک حذف شد: ' + task.title, { icon: '🗑️', duration: 2000 }))}>حذف</button>
+                </td>
               </tr>
             ))}
           </tbody>
@@ -135,14 +143,22 @@ export const DueThisWeekTable: React.FC<DueThisWeekTableProps> = ({ data }) => {
             </tr>
           </thead>
           <tbody>
-            {data.map((task) => (
-              <tr key={task.task_id}>
-                <td className="font-medium">{task.title}</td>
-                <td>{task.owner}</td>
-                <td>{formatJalaliDate(task.due_at)}</td>
-                <td><StatusBadge status={task.status} /></td>
-              </tr>
-            ))}
+                {data.map((task) => (
+                  <tr 
+                    key={task.task_id}
+                    className="hover:bg-gray-800/30 transition-colors duration-200 cursor-pointer"
+                  >
+                    <td className="font-medium">{task.title}</td>
+                    <td>{task.owner}</td>
+                    <td>{formatJalaliDate(task.due_at)}</td>
+                    <td><StatusBadge status={task.status} /></td>
+                    <td>
+                      <button className="btn-xs btn-primary mr-1" onClick={() => import('react-hot-toast').then(({ default: toast }) => toast('جزئیات تسک: ' + task.title, { icon: '🔎', duration: 2000 }))}>جزئیات</button>
+                      <button className="btn-xs btn-warning mr-1" onClick={() => import('react-hot-toast').then(({ default: toast }) => toast('ویرایش تسک: ' + task.title, { icon: '✏️', duration: 2000 }))}>ویرایش</button>
+                      <button className="btn-xs btn-danger" onClick={() => import('react-hot-toast').then(({ default: toast }) => toast('تسک حذف شد: ' + task.title, { icon: '🗑️', duration: 2000 }))}>حذف</button>
+                    </td>
+                  </tr>
+                ))}
           </tbody>
         </table>
       </div>
@@ -214,7 +230,10 @@ export const TaskListTable: React.FC<TaskListTableProps> = ({
           </thead>
           <tbody>
             {data.rows.map((task) => (
-              <tr key={task.task_id}>
+              <tr 
+                key={task.task_id}
+                className="hover:bg-gray-800/30 transition-colors duration-200 cursor-pointer"
+              >
                 <td className="font-medium">{task.title}</td>
                 <td>{task.owner}</td>
                 <td><StatusBadge status={task.status} /></td>
@@ -224,9 +243,9 @@ export const TaskListTable: React.FC<TaskListTableProps> = ({
                 <td>{task.due_at ? formatJalaliDate(task.due_at) : '-'}</td>
                 <td>
                   <div className="flex items-center gap-2">
-                    <div className="w-16 bg-slate-600 rounded-full h-2">
+                    <div className="w-16 bg-slate-600 rounded-full h-2 overflow-hidden">
                       <div 
-                        className="bg-blue-500 h-2 rounded-full" 
+                        className="bg-blue-500 h-2 rounded-full transition-all duration-500 ease-out hover:bg-blue-400" 
                         style={{ width: `${task.progress_percent}%` }}
                       ></div>
                     </div>

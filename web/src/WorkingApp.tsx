@@ -16,8 +16,8 @@ const WorkingApp: React.FC = () => {
   const [kpiData, setKpiData] = useState<any>(null);
   const [overdueData, setOverdueData] = useState<any[]>([]);
   const [dueThisWeekData, setDueThisWeekData] = useState<any[]>([]);
-  const [statusCounts, setStatusCounts] = useState<any[]>([]);
-  const [ownerCounts, setOwnerCounts] = useState<any[]>([]);
+  const [_statusCounts, setStatusCounts] = useState<any[]>([]);
+  const [_ownerCounts, setOwnerCounts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 

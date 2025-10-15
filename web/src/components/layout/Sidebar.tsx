@@ -1,89 +1,139 @@
 import React from 'react';
-import { 
-  LayoutDashboard, 
-  ListTodo, 
-  BarChart3, 
-  Settings,
-  Users,
-  Calendar,
-  FileText,
-  Target,
-  TrendingUp,
-  Clock
-} from 'lucide-react';
+import { LayoutDashboard, ListChecks, BarChart3, Settings, ChevronLeft } from 'lucide-react';
+
+type Page = 'dashboard' | 'tasks' | 'analytics' | 'settings';
 
 interface SidebarProps {
   isOpen: boolean;
-  currentPage: string;
-  onPageChange: (page: any) => void;
+  currentPage: Page | string;
+  onPageChange: (page: Page) => void;
 }
 
+const items: Array<{ key: Page; label: string; icon: React.ReactNode; description: string }> = [
+  { 
+    key: 'dashboard', 
+    label: 'داشبورد', 
+    icon: <LayoutDashboard className="w-5 h-5" />,
+    description: 'نمای کلی پروژه'
+  },
+  { 
+    key: 'tasks', 
+    label: 'مدیریت وظایف', 
+    icon: <ListChecks className="w-5 h-5" />,
+    description: 'وظایف و پروژه‌ها'
+  },
+  { 
+    key: 'analytics', 
+    label: 'تحلیل‌ها', 
+    icon: <BarChart3 className="w-5 h-5" />,
+    description: 'گزارش‌ها و آمار'
+  },
+  { 
+    key: 'settings', 
+    label: 'تنظیمات', 
+    icon: <Settings className="w-5 h-5" />,
+    description: 'تنظیمات سیستم'
+  },
+];
+
 export const Sidebar: React.FC<SidebarProps> = ({ isOpen, currentPage, onPageChange }) => {
-  const menuItems = [
-    {
-      id: 'dashboard',
-      label: 'داشبورد',
-      icon: LayoutDashboard,
-      color: 'from-blue-500 to-blue-600',
-    },
-    {
-      id: 'tasks',
-      label: 'مدیریت تسک‌ها',
-      icon: ListTodo,
-      color: 'from-green-500 to-green-600',
-    },
-    {
-      id: 'analytics',
-      label: 'تحلیل و گزارش',
-      icon: BarChart3,
-      color: 'from-purple-500 to-purple-600',
-    },
-    {
-      id: 'settings',
-      label: 'تنظیمات',
-      icon: Settings,
-      color: 'from-gray-500 to-gray-600',
-    },
-  ];
-
-  const quickStats = [
-    { label: 'تسک‌های امروز', value: '8', icon: Clock, color: 'text-blue-400' },
-    { label: 'در انتظار', value: '3', icon: Target, color: 'text-yellow-400' },
-    { label: 'تکمیل شده', value: '15', icon: TrendingUp, color: 'text-green-400' },
-  ];
-
   return (
-    <aside
-      className={`fixed right-0 top-16 bottom-0 w-64 bg-gray-900/50 backdrop-blur-xl border-l border-gray-700/50 transition-transform duration-300 z-40 ${
-        isOpen ? 'translate-x-0' : 'translate-x-full'
-      }`}
-    >
-      <div className="flex flex-col h-full">
-        {/* Menu Items */}
-        <nav className="flex-1 p-4">
-          <h3 className="text-xs font-semibold text-gray-400 uppercase mb-4">
-            منو اصلی
-          </h3>
+    <>
+      {/* Overlay for mobile */}
+      {isOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden transition-opacity duration-300"
+          onClick={() => {/* Mobile overlay click handler can be added here */}}
+        />
+      )}
+
+      <aside
+        className={`
+          fixed top-20 right-0 bottom-0 z-50
+          w-72 
+          bg-gradient-to-b from-slate-900/95 via-blue-900/90 to-purple-900/95
+          backdrop-blur-2xl
+          border-l border-white/10
+          shadow-2xl
+          transition-all duration-500 ease-out
+          overflow-y-auto custom-scrollbar
+          ${isOpen ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0 pointer-events-none'}
+        `}
+        aria-hidden={!isOpen}
+      >
+        {/* Decorative Top Gradient */}
+        <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-blue-500/10 to-transparent pointer-events-none" />
+        
+        {/* Navigation */}
+        <nav className="relative py-6 px-4">
           <ul className="space-y-2">
-            {menuItems.map((item) => {
-              const Icon = item.icon;
-              const isActive = currentPage === item.id;
-              
+            {items.map((item, index) => {
+              const active = (currentPage as Page) === item.key;
               return (
-                <li key={item.id}>
+                <li 
+                  key={item.key}
+                  style={{
+                    animation: `slideIn 0.3s ease-out ${index * 0.1}s backwards`
+                  }}
+                >
                   <button
-                    onClick={() => onPageChange(item.id)}
-                    className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 ${
-                      isActive
-                        ? `bg-gradient-to-r ${item.color} text-white shadow-lg`
-                        : 'text-gray-300 hover:bg-gray-800 hover:text-white'
-                    }`}
+                    onClick={() => onPageChange(item.key)}
+                    className={`
+                      group relative w-full
+                      flex items-center justify-between gap-3
+                      px-4 py-4 rounded-2xl
+                      transition-all duration-300
+                      focus:outline-none focus:ring-2 focus:ring-blue-500/40
+                      overflow-hidden
+                      ${active
+                        ? 'bg-gradient-to-l from-blue-600/30 via-purple-600/30 to-blue-600/30 text-white shadow-lg shadow-blue-500/20 scale-105'
+                        : 'hover:bg-white/5 text-gray-300 hover:text-white hover:scale-102'
+                      }
+                    `}
+                    aria-current={active ? 'page' : undefined}
                   >
-                    <Icon className="w-5 h-5" />
-                    <span className="font-medium">{item.label}</span>
-                    {isActive && (
-                      <span className="mr-auto w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
+                    {/* Background Glow Effect */}
+                    {active && (
+                      <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 blur-xl -z-10 animate-pulse" />
                     )}
+
+                    {/* Content */}
+                    <div className="relative z-10 flex-1 text-right">
+                      <div className="flex items-center justify-between">
+                        <span className={`text-base font-bold transition-all duration-300 ${
+                          active ? 'text-white' : 'text-gray-300 group-hover:text-white'
+                        }`}>
+                          {item.label}
+                        </span>
+                        
+                        <span className={`shrink-0 transition-all duration-300 ${
+                          active ? 'text-blue-300 scale-110' : 'text-gray-400 group-hover:text-blue-300 group-hover:scale-110'
+                        }`}>
+                          {item.icon}
+                        </span>
+                      </div>
+                      
+                      <p className={`text-xs mt-1 transition-all duration-300 ${
+                        active ? 'text-blue-200' : 'text-gray-500 group-hover:text-gray-400'
+                      }`}>
+                        {item.description}
+                      </p>
+                    </div>
+
+                    {/* Active Indicator */}
+                    {active && (
+                      <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-12 bg-gradient-to-b from-blue-400 to-purple-500 rounded-r-full shadow-lg shadow-blue-500/50" />
+                    )}
+
+                    {/* Hover Arrow */}
+                    <ChevronLeft className={`
+                      absolute left-2 w-4 h-4
+                      transition-all duration-300
+                      ${active 
+                        ? 'opacity-100 translate-x-0 text-blue-300' 
+                        : 'opacity-0 translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 text-gray-400'
+                      }
+                    `} />
                   </button>
                 </li>
               );
@@ -91,43 +141,63 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, currentPage, onPageCha
           </ul>
         </nav>
 
-        {/* Quick Stats */}
-        <div className="p-4 border-t border-gray-700/50">
-          <h3 className="text-xs font-semibold text-gray-400 uppercase mb-3">
-            آمار سریع
-          </h3>
-          <div className="space-y-2">
-            {quickStats.map((stat, index) => {
-              const Icon = stat.icon;
-              return (
-                <div
-                  key={index}
-                  className="flex items-center justify-between p-2 rounded-lg bg-gray-800/50"
-                >
-                  <div className="flex items-center gap-2">
-                    <Icon className={`w-4 h-4 ${stat.color}`} />
-                    <span className="text-sm text-gray-300">{stat.label}</span>
-                  </div>
-                  <span className={`text-sm font-bold ${stat.color}`}>
-                    {stat.value}
-                  </span>
+        {/* Info Card */}
+        <div className="mx-4 mb-6 mt-8">
+          <div className="relative overflow-hidden p-5 rounded-2xl bg-gradient-to-br from-blue-600/20 to-purple-600/20 backdrop-blur-sm border border-white/10 shadow-xl">
+            {/* Decorative Elements */}
+            <div className="absolute -top-10 -right-10 w-32 h-32 bg-blue-500/20 rounded-full blur-3xl" />
+            <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-purple-500/20 rounded-full blur-3xl" />
+            
+            <div className="relative z-10">
+              <div className="flex items-start gap-3 mb-3">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shrink-0">
+                  <span className="text-xl">ℹ️</span>
                 </div>
-              );
-            })}
+                <div>
+                  <h3 className="font-bold text-white text-sm mb-1">راهنمای سیستم</h3>
+                  <p className="text-xs text-gray-300 leading-relaxed">
+                    سیستم مدیریت پروژه با پشتیبانی کامل از تقویم جلالی
+                  </p>
+                </div>
+              </div>
+              
+              <div className="space-y-2 text-xs text-gray-400">
+                <div className="flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+                  <span>سرور API فعال و در دسترس</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
+                  <span>همگام‌سازی خودکار فعال</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* User Section */}
-        <div className="p-4 border-t border-gray-700/50">
-          <div className="flex items-center gap-3 p-3 rounded-lg bg-gray-800/50">
-            <div className="flex-1">
-              <p className="text-sm font-medium text-gray-300">نسخه سیستم</p>
-              <p className="text-xs text-gray-500">v2.0.0 - Enterprise</p>
-            </div>
-            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+        {/* Version Info */}
+        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-white/10 bg-gradient-to-t from-slate-900/80 to-transparent backdrop-blur-sm">
+          <div className="text-center text-xs text-gray-500">
+            <p className="font-medium">نسخه 2.0.0</p>
+            <p className="text-[10px] mt-1">© 2024 معاونت فناوری اطلاعات</p>
           </div>
         </div>
-      </div>
-    </aside>
+      </aside>
+
+      <style>{`
+        @keyframes slideIn {
+          from {
+            opacity: 0;
+            transform: translateX(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+      `}</style>
+    </>
   );
 };
+
+export default Sidebar;

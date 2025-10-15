@@ -7,7 +7,7 @@ interface SimpleSearchProps {
   onReset: () => void;
 }
 
-export const SimpleSearch: React.FC<SimpleSearchProps> = ({ meta, onSearch, onReset }) => {
+export const SimpleSearch: React.FC<SimpleSearchProps> = ({ meta: _meta, onSearch, onReset }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [quickFilter, setQuickFilter] = useState('');
 
@@ -47,13 +47,19 @@ export const SimpleSearch: React.FC<SimpleSearchProps> = ({ meta, onSearch, onRe
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="جست‌وجو در تسک‌ها..."
-            className="w-full input pr-10"
+            className="w-full input pr-10 transition-all duration-200 
+              focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 
+              hover:border-slate-600"
             onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
           />
         </div>
         <button
           onClick={handleSearch}
-          className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors font-medium"
+          className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg 
+            transition-all duration-200 font-medium transform 
+            hover:scale-105 active:scale-95 
+            focus:outline-none focus:ring-2 focus:ring-blue-500/50
+            shadow-md hover:shadow-lg cursor-pointer"
         >
           جست‌وجو
         </button>
@@ -74,14 +80,18 @@ export const SimpleSearch: React.FC<SimpleSearchProps> = ({ meta, onSearch, onRe
               });
             }}
             className={`
-              px-3 py-1.5 rounded-lg text-sm font-medium transition-colors
+              px-3 py-1.5 rounded-lg text-sm font-medium 
+              transition-all duration-200 transform
+              hover:scale-105 active:scale-95
+              focus:outline-none focus:ring-2 focus:ring-offset-2
+              cursor-pointer
               ${quickFilter === filter.value
-                ? filter.color === 'blue' ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30'
-                : filter.color === 'yellow' ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
-                : filter.color === 'green' ? 'bg-green-500/20 text-green-400 border border-green-500/30'
-                : filter.color === 'red' ? 'bg-red-500/20 text-red-400 border border-red-500/30'
-                : 'bg-slate-500/20 text-slate-400 border border-slate-500/30'
-                : 'text-slate-400 hover:text-white hover:bg-white/10 border border-transparent'
+                ? filter.color === 'blue' ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30 shadow-md'
+                : filter.color === 'yellow' ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30 shadow-md'
+                : filter.color === 'green' ? 'bg-green-500/20 text-green-400 border border-green-500/30 shadow-md'
+                : filter.color === 'red' ? 'bg-red-500/20 text-red-400 border border-red-500/30 shadow-md'
+                : 'bg-slate-500/20 text-slate-400 border border-slate-500/30 shadow-md'
+                : 'text-slate-400 hover:text-white hover:bg-white/10 border border-transparent hover:border-slate-600'
               }
             `}
           >
@@ -92,7 +102,11 @@ export const SimpleSearch: React.FC<SimpleSearchProps> = ({ meta, onSearch, onRe
         {(searchTerm || quickFilter) && (
           <button
             onClick={handleReset}
-            className="px-3 py-1.5 text-slate-400 hover:text-white hover:bg-white/10 rounded-lg text-sm transition-colors border border-transparent"
+            className="px-3 py-1.5 text-slate-400 hover:text-white hover:bg-white/10 
+              rounded-lg text-sm transition-all duration-200 border border-transparent
+              hover:border-slate-600 transform hover:scale-105 active:scale-95
+              focus:outline-none focus:ring-2 focus:ring-slate-500/50
+              cursor-pointer"
           >
             پاک کردن
           </button>

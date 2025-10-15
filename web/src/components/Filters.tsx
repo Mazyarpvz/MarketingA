@@ -43,12 +43,15 @@ export const Filters: React.FC<FiltersProps> = ({ meta, filters, onFiltersChange
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="جست‌وجو در عنوان و توضیحات..."
-              className="input flex-1"
+              className="input flex-1 transition-all duration-200
+                focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500
+                hover:border-slate-600"
               onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
             />
             <button
               onClick={handleSearch}
-              className="btn-primary"
+              className="btn-primary transform hover:scale-105 active:scale-95
+                transition-all duration-200 shadow-md hover:shadow-lg"
             >
               جست‌وجو
             </button>
@@ -63,7 +66,9 @@ export const Filters: React.FC<FiltersProps> = ({ meta, filters, onFiltersChange
           <select
             value={filters.ownerId || ''}
             onChange={(e) => handleFilterChange('ownerId', e.target.value)}
-            className="input"
+            className="input transition-all duration-200
+              focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500
+              hover:border-slate-600 cursor-pointer"
           >
             <option value="">همه مالکان</option>
             {meta.owners.map((owner) => (
@@ -82,7 +87,9 @@ export const Filters: React.FC<FiltersProps> = ({ meta, filters, onFiltersChange
           <select
             value={filters.statusCode || ''}
             onChange={(e) => handleFilterChange('statusCode', e.target.value)}
-            className="input"
+            className="input transition-all duration-200
+              focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500
+              hover:border-slate-600 cursor-pointer"
           >
             <option value="">همه وضعیت‌ها</option>
             {meta.statuses.map((status) => (
@@ -101,7 +108,9 @@ export const Filters: React.FC<FiltersProps> = ({ meta, filters, onFiltersChange
           <select
             value={filters.projectId || ''}
             onChange={(e) => handleFilterChange('projectId', e.target.value)}
-            className="input"
+            className="input transition-all duration-200
+              focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500
+              hover:border-slate-600 cursor-pointer"
           >
             <option value="">همه پروژه‌ها</option>
             {meta.projects.map((project) => (
@@ -120,7 +129,9 @@ export const Filters: React.FC<FiltersProps> = ({ meta, filters, onFiltersChange
           <select
             value={filters.moduleId || ''}
             onChange={(e) => handleFilterChange('moduleId', e.target.value)}
-            className="input"
+            className="input transition-all duration-200
+              focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500
+              hover:border-slate-600 cursor-pointer"
           >
             <option value="">همه ماژول‌ها</option>
             {meta.modules.map((module) => (
@@ -135,7 +146,8 @@ export const Filters: React.FC<FiltersProps> = ({ meta, filters, onFiltersChange
         <div>
           <button
             onClick={clearFilters}
-            className="btn-secondary"
+            className="btn-secondary transform hover:scale-105 active:scale-95
+              transition-all duration-200"
           >
             پاک کردن فیلترها
           </button>

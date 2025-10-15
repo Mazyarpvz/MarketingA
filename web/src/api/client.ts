@@ -81,6 +81,26 @@ class ApiClient {
     const queryString = params.toString();
     return this.request<TaskListResponse>(`/tasks${queryString ? `?${queryString}` : ''}`);
   }
+
+  async createTask(taskData: any): Promise<{ success: boolean; taskId: string; message: string }> {
+    return this.request('/tasks', {
+      method: 'POST',
+      body: JSON.stringify(taskData),
+    });
+  }
+
+  async updateTask(taskId: string, taskData: any): Promise<{ success: boolean; message: string }> {
+    return this.request(`/tasks/${taskId}`, {
+      method: 'PUT',
+      body: JSON.stringify(taskData),
+    });
+  }
+
+  async deleteTask(taskId: string): Promise<{ success: boolean; message: string }> {
+    return this.request(`/tasks/${taskId}`, {
+      method: 'DELETE',
+    });
+  }
 }
 
 export const apiClient = new ApiClient();

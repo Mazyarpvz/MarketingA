@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Simple CRUD Test</title>
+    <style>
+        body { 
+            font-family: Arial; 
+            padding: 20px; 
+            background: #1a1a1a; 
+            color: #fff; 
+        }
+        button { 
+            padding: 15px 30px; 
+            margin: 10px; 
+            font-size: 16px;
+            cursor: pointer; 
+            background: #4CAF50; 
+            color: white; 
+            border: none; 
+            border-radius: 5px;
+        }
+        button:hover { background: #45a049; }
+        #result { 
+            margin-top: 20px; 
+            padding: 20px; 
+            background: #2a2a2a; 
+            border-radius: 5px;
+            white-space: pre-wrap;
+            font-family: 'Courier New', monospace;
+        }
+        .error { color: #ff6b6b; }
+        .success { color: #4ecca3; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Simple CRUD Test</h1>
+    <p>Click button to test POST endpoint:</p>
+    
+    <button onclick="testCreate()">CREATE TASK</button>
+    
+    <div id="result"></div>
+    
+    <script>
+        function log(msg) {
+            document.getElementById('result').textContent += msg + '\n';
+        }
+        
+        async function testCreate() {
+            document.getElementById('result').textContent = '';
+            log('⏳ Testing POST /api/tasks...\n');
+            
+            const data = {
+                title: 'Test Task',
+                description: 'Created from simple test',
+                projectId: 1,
+                progressPercent: 0
+            };
+            
+            log('📤 Sending data: ' + JSON.stringify(data, null, 2) + '\n');
+            
+            try {
+                const response = await fetch('http://localhost:3002/api/tasks', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                log('📥 Response Status: ' + response.status + ' ' + response.statusText + '\n');
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    log('✅ SUCCESS!\n');
+                    log(JSON.stringify(result, null, 2));
+                } else {
+                    log('❌ ERROR:\n');
+                    log(JSON.stringify(result, null, 2));
+                }
+            } catch (error) {
+                log('💥 NETWORK ERROR: ' + error.message);
+            }
+        }
+    </script>
+</body>
+</html>

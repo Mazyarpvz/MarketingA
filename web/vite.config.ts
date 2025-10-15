@@ -12,10 +12,24 @@ export default defineConfig({
   server: {
     port: 5173,
     host: 'localhost',
+    fs: {
+      // Allow serving files from the project root and node_modules
+      allow: [
+        path.resolve(__dirname, '..'),
+        path.resolve(__dirname, '../node_modules'),
+      ],
+    },
+    hmr: {
+      protocol: 'ws',
+      host: 'localhost',
+      port: 5173,
+    },
     proxy: {
       '/api': {
-        target: 'http://localhost:3002',
+        // Follow backend port from env when overridden (fallback 3002)
+        target: `http://localhost:${process.env.BACKEND_PORT || process.env.PORT || 3001}`,
         changeOrigin: true,
+        secure: false,
       },
     },
   },

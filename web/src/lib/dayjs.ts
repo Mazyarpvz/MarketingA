@@ -1,5 +1,9 @@
-import dayjs from 'dayjs';
+import * as dayjsNS from 'dayjs';
 import jalali from 'jalaliday';
+
+// dayjs ESM/CJS typing quirk workaround
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const dayjs = (dayjsNS as any).default ?? (dayjsNS as any);
 
 dayjs.extend(jalali);
 

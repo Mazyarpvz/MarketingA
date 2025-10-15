@@ -1,13 +1,11 @@
 import React from 'react';
 import { 
   ListTodo, 
-  Clock, 
   AlertTriangle, 
   Calendar,
   CheckCircle,
   XCircle,
-  Activity,
-  TrendingUp
+  Activity
 } from 'lucide-react';
 import { KpiResponse } from '../../api/types';
 
